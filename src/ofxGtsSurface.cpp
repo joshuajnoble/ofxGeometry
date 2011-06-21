@@ -1,5 +1,10 @@
 #include "ofxGtsSurface.h"
 
+void build_list (gpointer data, GSList ** list)
+{
+	*list = g_slist_prepend (*list, data);
+}
+
 static void build_vertex_vector(gpointer data, vector<GtsVertex*>* vertices) {
 	vertices->push_back((GtsVertex*)data);
 }
@@ -27,13 +32,13 @@ void ofxGtsSurface::createSphere(guint level) {
 	//gts_surface_write (s, stdout);
 }
 
-vector<GtsVertex*> ofxGtsSurface::getVertices() {
+vector<GtsVertex*>& ofxGtsSurface::getVertices() {
 	//vector<GtsVertex*> vertices;
 	gts_surface_foreach_vertex(s, (GtsFunc) build_vertex_vector, &surfaceVertices);
 	return surfaceVertices;
 }
 
-vector<GtsEdge*> ofxGtsSurface::getEdges() {
+vector<GtsEdge*>& ofxGtsSurface::getEdges() {
 	//vector<GtsEdge*> edges;
 	gts_surface_foreach_edge(s, (GtsFunc) build_edge_vector, &surfaceEdges);
 	return surfaceEdges;
@@ -48,7 +53,6 @@ vector<GtsTriangle*>& ofxGtsSurface::getTriangles() {
 void ofxGtsSurface::addVertices(vector<ofVec3f> verts) {
 	
 	
-	
 }
 
 
@@ -59,7 +63,7 @@ bool ofxGtsSurface::intersects(ofxGtsSurface* surfaceToCheck) {
 
 void ofxGtsSurface::merge(ofxGtsSurface* surfaceToMerge) {
 	
-	gts_surface_merge (s, s1);
+	gts_surface_merge (s, surfaceToMerge->getSurface());
 	
 	// now delete the other surface?
 }
@@ -79,7 +83,7 @@ void ofxGtsSurface::cleanupTriangles()
 	/* remove duplicate triangles */
 	i = triangles;
 	while (i) {
-		GtsTriangle * t = i->data;
+		GtsTriangle * t = (GtsTriangle*) i->data ;
 		if (gts_triangle_is_duplicate (t))
 		/* destroy t, its edges (if not used by any other triangle)
 		 and its corners (if not used by any other edge) */
@@ -112,7 +116,7 @@ void ofxGtsSurface::cleanupVertices()
 	
 	i = edges;
 	while (i) {
-		GtsEdge * e = i->data;
+		GtsEdge * e = (GtsEdge*) i->data;
 		GtsEdge * duplicate;
 		if (GTS_SEGMENT (e)->v1 == GTS_SEGMENT (e)->v2) /* edge is degenerate */
 		/* destroy e */

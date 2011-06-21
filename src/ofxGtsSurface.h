@@ -4,28 +4,32 @@
 #include "ofMain.h"
 
 using namespace std;
+
 class ofxGtsSurface {
+	
 public: 
+	
 	ofxGtsSurface();
 	void createSphere(guint level);
 	vector<GtsVertex*>& getVertices();
 	vector<GtsEdge*>& getEdges();
 	vector<GtsTriangle*>& getTriangles();
 	
-	void ofxGtsSurface::addVertices(vector<ofVec3f> verts);
-	bool ofxGtsSurface::intersects(ofxGtsSurface* surfaceToCheck);
-	void ofxGtsSurface::merge(ofxGtsSurface* surfaceToMerge);
+	void addVertices(vector<ofVec3f> verts);
+	bool intersects(ofxGtsSurface* surfaceToCheck);
+	void merge(ofxGtsSurface* surfaceToMerge);
 	
-	void ofxGtsSurface::cleanupTriangles();
+	void cleanupTriangles();
+	void cleanupVertices();
 	
-	void ofxGtsSurface::cleanupVertices();
-	
+	GtsSurface* getSurface() { return s; }
 	
 private:
+	
 	GtsSurface* s;
 	
 	vector<GtsTriangle*> surfaceTriangles;
-	vector<GtsVertex*> surfaceVertexes;
+	vector<GtsVertex*> surfaceVertices;
 	vector<GtsEdge*> surfaceEdges;
 	
 };
