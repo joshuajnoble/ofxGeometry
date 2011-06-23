@@ -25,6 +25,11 @@ public:
 	ofxGts();
 	~ofxGts();
 	ofxGtsSurface& createSurface();
+	
+	vector<ofxGtsSurface*> splitSurface(ofxGtsSurface* toBeSplit);
+	void splitSurface(ofxGtsSurface* toBeSplit, GSList* list);
+	
 private:
 	vector<ofxGtsSurface*> surfaces;
+	vector<ofxGtsSurface*> splitSurfs;
 };

@@ -10,6 +10,7 @@ class ofxGtsSurface {
 public: 
 	
 	ofxGtsSurface();
+	ofxGtsSurface(GtsSurface* passIn);
 	~ofxGtsSurface();
 	GtsVertex* createVertex(float x, float y, float z);
 	GtsEdge* createEdge(GtsVertex* v1, GtsVertex* v2);
@@ -25,17 +26,31 @@ public:
 	bool intersects(ofxGtsSurface* surfaceToCheck);
 	void merge(ofxGtsSurface* surfaceToMerge);
 	
+	void drawBounding();
+	
 	void cleanupTriangles();
 	void cleanupVertices();
 	
+	float getCenterOfMass();
+	float getVolume();
+	float getArea();
+	
+	pair<ofVec3f, ofVec3f> getBoundingBox();
+	bool checkIsPointInside(ofVec3f point);
+	bool areOverlapping( ofxGtsSurface* other);
+	
+	void bbFromPair(GtsBBox* box, pair<ofVec3f, ofVec3f>* p);
+	
 	GtsSurface* getSurface() { return s; }
+	
 	
 private:
 	
 	GtsSurface* s;
-
-	vector<GtsTriangle*> surfaceTriangles;
-	vector<GtsVertex*> surfaceVertices;
-	vector<GtsEdge*> surfaceEdges;
-	vector<GtsFace*> surfaceFaces;
+	ofNode drawNode;
+	
+	vector<GtsTriangle*> triangles;
+	vector<GtsVertex*> vertices;
+	vector<GtsEdge*> edges;
+	vector<GtsFace*> faces;
 };
